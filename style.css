@@ -1,0 +1,321 @@
+#notification-wrapper{
+  position:fixed;
+  top:50px;
+  width:100%;
+  z-index:2000;
+}
+
+.input-error{
+  color: #E00000;
+  font-size: 13px;
+  display: block;
+}
+
+.full button span {
+  background-color: limegreen;
+  border-radius: 32px;
+  color: black;
+}
+.partially button span {
+  background-color: orange;
+  border-radius: 32px;
+  color: black;
+}
+
+#addUser{
+  background-color: #eee;
+  padding-bottom:2em;
+  padding-left:2em;
+  padding-right:2em;
+}
+
+#addUser h2{
+  padding-left:13px;
+}
+
+.progress{
+  background-color: #CCC;    
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) inset;       
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#passwordValidate {
+  padding-left: 0;
+  padding-top: 6px;  
+  list-style: none;  
+}
+
+#passwordValidate li{
+  
+}
+
+#passwordValidate span{
+  color:#009908;
+}
+
+#passwordValidate .has-error{
+  color:#E00000;
+}
+
+
+.table {
+  margin-bottom:0;
+}
+
+
+.btn-actions{
+  text-align: center;
+  vertical-align: middle !important;
+}
+
+.btn-actions .btn-group{
+  padding-left:20px;
+  font-size: 20px;
+}
+
+
+.btn-edit-action i{
+   font-size: 20px;
+}
+
+#addUserButton{
+  margin-bottom: 16px;
+  margin-left: 2em;
+  position: relative;
+  top: 2px;
+  
+}
+
+#resetSearch{
+  margin-bottom: 16px;
+  margin-left: 2em;
+  position: relative;
+  top: 2px;
+}
+
+#manageUsers{
+  margin-left: 0.6em;
+}
+
+#search{
+  float: left;  
+  padding-left: 24px;
+  max-width: 344px;
+}
+
+.editDesc{
+    height: 115px;
+    width: 100%;
+}
+
+#contact{
+   padding: 0;
+}
+
+#contact li{
+  list-style: outside none none;
+  margin-top: 1em;
+  padding-left: 0;
+}
+
+#contact i{
+  margin-right: 1em;
+}
+
+tr.head{
+/*   height:20px; */
+}
+
+.launch{
+  margin-bottom: 2em;
+  margin-top: 1em;
+}
+
+.footer{
+  padding: 1em;
+  position: fixed;
+  width: 100%;
+  bottom:0;
+  background: -moz-linear-gradient(top, rgba(125,185,232,0) 0%, rgba(153,153,153,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(125,185,232,0) 0%,rgba(153,153,153,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(125,185,232,0) 0%,rgba(153,153,153,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#007db9e8', endColorstr='#999999',GradientType=0 );
+  
+}
+
+.footer i{
+  margin-left:1em;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.pagination {
+  z-index: 1000;
+}
+
+#repopulateData{
+  margin-right:1em;
+}
+
+#spinnerWraper{
+  position:fixed;
+  width:100%;
+  height:100%; 
+  background-color:rgba(0,0,0,.5);
+  top: 0;
+  z-index: 10001;
+}
+
+#spinnerMsg{
+  
+}
+
+#spinnerMsg > p {
+  color:#fff;
+  font-size:24px;
+  font-weight:bold;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;  
+  text-align: center;
+}
+#resetSearch{
+  float:left;
+}
+
+#searchclear {
+  bottom: 0;
+  color: #990000;
+  cursor: pointer;
+  font-size: 18px;
+  height: 14px;
+  margin: auto;
+  position: absolute;
+  right: 7px;
+  top: -4px;
+  z-index: 1000;
+}
+
+input.has-error{
+  border:1px solid #ff8f8f;
+}
+
+input.ng-invalid{
+  border:1px solid #ff8f8f;
+}
+
+input.ng-valid{
+  border:1px solid #c8d9b4;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+#paginationContainer{
+  margin-bottom:3em;
+}
+
+.mainBrand{
+  font-size:1em;
+}
+
+/*
+  We're using CSS transitions for when
+  the enter and move events are triggered
+  for the element that has the .repeated-item
+  class
+*/
+.repeated-item.ng-enter, .repeated-item.ng-move {
+  transition: all 0.5s linear;
+  opacity: 0;
+}
+
+/*
+ The ng-enter-active and ng-move-active
+ are where the transition destination properties
+ are set so that the animation knows what to
+ animate.
+*/
+.repeated-item.ng-enter.ng-enter-active,
+.repeated-item.ng-move.ng-move-active {
+  opacity: 1;
+}
+
+/*
+  We're using CSS keyframe animations for when
+  the leave event is triggered for the element
+  that has the .repeated-item class
+*/
+.repeated-item.ng-leave {
+  animation: 0.5s my_animation;
+}
+
+@keyframes my_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@media only screen and (max-width: 760px)  {
+
+        /* Force table to not be like tables anymore */
+        table, thead, tbody, th, td, tr { 
+                display: block; 
+        }
+        
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr { 
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+        }
+        
+        tr { border: 1px solid #ccc; }
+        
+        td { 
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee; 
+                position: relative;
+                padding-left: 50%; 
+        }
+        
+        td:before { 
+                padding-right: 10px; 
+                white-space: nowrap;
+        }
+        
+        tr.head{
+          display:none;
+        }
+        
+        .btn-actions .btn-group{
+          padding-left:0;
+        }
+        
+        #search{
+          float:none;
+          padding-left:1.7em;
+          padding-right:1em;
+          min-width:0;
+        }
+        
+        footer{
+           z-index: -1;
+           display:none;
+        }
+        
+        /*
+        Label the data
+        */
+        td:nth-of-type(2):before { content: "ID :"; }
+        td:nth-of-type(3):before { content: "Firstname :"; }
+        td:nth-of-type(4):before { content: "Lastname :"; }
+        td:nth-of-type(5):before { content: "Username :"; }
+        td:nth-of-type(6):before { content: "Description :"; }
+
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- define angular app -->
+<html ng-app="myApp">
+
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css" />
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css  ">
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- jquery -->
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+  <!-- angular -->
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.js"></script>
+
+  <!-- bootstrap -->
+  <script type="text/javascript" src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+
+  <!-- Main App -->
+  <script src="app.js"></script>
+
+  <!-- Page Controllers -->
+  <script type="text/javascript" src="/controller/user.js"></script>
+
+  <!-- Sublemental Controllers -->
+  <script type="text/javascript" src="/controller/navigation.js"></script>
+  <script type="text/javascript" src="/controller/notificaion.js"></script>
+  <script type="text/javascript" src="/controller/typeahead.js"></script>
+  <script type="text/javascript" src="/controller/alert.js"></script>
+  <script type="text/javascript" src="/controller/datePicker.js"></script>
+
+  <!-- Directives -->
+  <script type="text/javascript" src="/directive/ubiAlert.js"></script>
+
+  <!-- Factory -->
+  <script type="text/javascript" src="/factory/userFactory.js"></script>
+
+  <!-- Filter -->
+  <script type="text/javascript" src="/filter/startForm.js"></script>
+
+  <base href="/">
+
+</head>
+
+<body>
+  <div ng-include="'partials/header.html'"></div>
+  <div id="main">
+    <!-- create the "view" container -->
+    <div ng-view></div>
+  </div>
+
+  <div ng-include="'partials/footer.html'"></div>
+</body>
+
+</html>

@@ -1,0 +1,239 @@
+<h1 id="manageUsers" ng-show="!addMode">Manage Users</h1>  
+  <div id="search" class="form-group"  ng-show="!addMode">
+    <div class="input-group">
+      <div class="input-group-addon"><i class="fa fa-search"></i></div>
+      <input id="searchText" type="text" class="form-control" placeholder="Search" ng-model="search.string">
+      <span id="searchclear" ng-class="{'disabled' : search.string == ''}" ng-click="resetSearch()" class="fa fa fa-times"></span>
+    </div>    
+  </div>
+<div id="addUserButton" ng-click="toggleAddMode()" ng-show="!addMode" class="btn btn-sm btn-primary"><i tooltip-placement="top-left" uib-tooltip="Add User"  class=" fa fa-plus-square "></i>&nbsp;Add User</div>
+<div id="repopulateData" ng-click="rebuildTestData()" ng-show="!addMode" class="pull-right btn btn-sm btn-warning"><i tooltip-placement="top-left" uib-tooltip="Recreate test data"  class=" fa fa-table "></i>&nbsp;Rebuild Test Data</div>
+    
+<div ng-cloak>
+
+  <div id="notification-wrapper">
+    <div ng-controller="notification">
+      <script type="text/ng-template" id="alert.html">
+        <div class="alert" ng-class="['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]" role="alert">
+          <div ng-transclude></div>
+        </div>
+      </script>
+      <uib-alert ng-repeat="alert in alerts" dismiss-on-timeout="{{alert.dt}}" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    </div>
+  </div>
+
+  <!-- addUser -->
+  <div id="addUser" class="row" ng-show="addMode" ng-form name="personForm">
+    <h2>New User {{addPerson.fname}} {{addPerson.lname}} </h2>
+    <!-- col 1 -->
+    <div class="col-sm-3">
+      <div ng-class="{'has-error': !personForm.fname.$error}" class="form-group">
+        <label for="fname">First Name</label>
+        <input class="form-control" name="fname" ng-model="addPerson.fname" placeholder="First Name" required/>
+        <span class="input-error" ng-show="personForm.fname.$touched && personForm.fname.$error.required">First Name is required.</span>
+      </div>
+
+      <div ng-class="{'has-error': !personForm.lname.$error}" class="form-group">
+        <label for="lname">Last Name</label>
+        <input class="form-control" name="lname" ng-model="addPerson.lname" placeholder="Last Name" required/>
+        <span class="input-error" ng-show="personForm.lname.$touched && personForm.lname.$error.required">Last Name is required.</span>
+      </div>
+
+      <div ng-controller="datePicker" class="form-group">
+        <label for="date">Date</label>
+            <p class="input-group">
+              <input name="date" ng-model="addPerson.date" type="text" class="form-control" placeholder="Date" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions"  close-text="Close" alt-input-formats="altInputFormats" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+      </div>
+
+      <div ng-class="{'has-error': !personForm.desc.$error}" class="form-group">
+        <label for="desc">Note</label>
+        <input class="form-control" name="desc" ng-model="addPerson.desc" ng-keyup="checkAddPerson($event);" placeholder="Notes" required/>
+        <span class="input-error" ng-show="personForm.desc.$touched && personForm.desc.$error.required">Note is required.</span>
+      </div>
+
+    </div>
+
+    <!-- col 2 -->
+    <div class="col-sm-3">
+      <div ng-class="{'has-error': !personForm.username.$error}" class="form-group">
+        <label for="username">Username</label>
+        <input class="form-control" autocomplete="off" name="username" ng-model="addPerson.username" ng-keyup="checkAddPerson($event);" placeholder="Username" required/>
+        <span class="input-error" ng-show="personForm.username.$touched && personForm.username.$error.required">Username is required.</span>
+      </div>
+
+      <div ng-class="{'has-error': !personForm.password.$error}" class="form-group">
+        <label for="password">Password</label>
+        <input type="password" data-ng-blur="validatePassword(addPerson)" autocomplete="off" class="form-control" name="password" ng-model="addPerson.password" ng-keyup="validatePassword(addPerson);checkAddPerson($event);" placeholder="Password"  required/>
+
+        <uib-progressbar ng-show="addPerson.password.length > 0" max="max" value="password.passwordScore" type="{{password.passwordType}}"><span style="color:white; white-space:nowrap;">{{password.passwordLabel}} : {{password.passwordScore}} / {{password.passwordMax}}</span></uib-progressbar>
+        <span class="input-error" ng-show="personForm.password.$touched && personForm.password.$error.required">Password is required.</span>
+        <ul id="passwordValidate" ng-show="addPerson.password.length > 0">
+          <li>One Capital - <span ng-class="{'has-error': !password.oneCap}">{{password.oneCap ? 'Pass!': 'Fail'}}</span></li>
+          <li>One Number -  <span ng-class="{'has-error': !password.oneNum}">{{password.oneNum? 'Pass!': 'Fail'}}</span></li>          
+          <li>One Symbol -  <span ng-class="{'has-error': !password.oneSymbol}">{{password.oneSymbol? 'Pass!': 'Fail!'}}</span></li>
+          <li>Min. Eight Characters - <span ng-class="{'has-error': !password.eightChars}">{{password.eightChars? 'Pass!': 'Fail'}}</span></li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label class="radio" for="dept">Department</label>
+        <div ng-class="{'has-error': !personForm.dept.$error}" name="dept" class="btn-group" required>        
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.dept" uib-btn-radio="'Executive'">Executive</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.dept" uib-btn-radio="'Sales'">Sales</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.dept" uib-btn-radio="'Marketing'">Marketing</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.dept" uib-btn-radio="'IT'">IT</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.dept" uib-btn-radio="'Engineering'">Engineering</label>
+        </div>
+        <span class="input-error" ng-show="personForm.dept.$touched && personForm.dept.$error.required">Department is required.</span>
+      </div>
+
+      <div class="form-group">
+        <label class="radio" for="role">Role</label>
+        <div ng-class="{'has-error': !personForm.role.$error}" name="role" class="btn-group" required>        
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.role" uib-btn-radio="'Admin'">Admin</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.role" uib-btn-radio="'Sales'">Sales</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.role" uib-btn-radio="'Marketing'">Marketing</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.role" uib-btn-radio="'IT'">IT</label>
+          <label class="btn btn-sm btn-primary" ng-model="addPerson.role" uib-btn-radio="'Engineering'">Engineering</label>
+        </div>
+        <span class="input-error" ng-show="personForm.role.$touched && personForm.role.$error.required">Role is required.</span>
+      </div>
+    </div>
+
+
+    <!-- col 3 -->
+    <div class="col-sm-3">
+      <div ng-class="{'has-error': !personForm.street.$error}" class="form-group">
+        <label for="lname">Street</label>
+        <input class="form-control" name="street" ng-model="addPerson.street" placeholder="Street" required/>
+        <span class="input-error" ng-show="personForm.street.$touched && personForm.street.$error.required">Street s required.</span>
+      </div>
+
+      <div ng-class="{'has-error': !personForm.city.$error}" class="form-group">
+        <label for="lname">City</label>
+        <input class="form-control" name="city" ng-model="addPerson.city" placeholder="City" required/>
+        <span class="input-error" ng-show="personForm.city.$touched && personForm.city.$error.required">City required.</span>
+      </div>
+
+      <div ng-class="{'has-error': !personForm.postal.$error}" class="form-group">
+        <label for="lname">Postal</label>
+        <input class="form-control" name="postal" ng-model="addPerson.postal" placeholder="Postal" required/>
+        <span class="input-error" ng-show="personForm.postal.$touched && personForm.postal.$error.required">Postal is required.</span>
+      </div>
+
+      <div ng-class="{'has-error': !personForm.province.$error}" class="form-group">
+        <div class='typeahead-demo' ng-controller="typeahead">
+            <label for="lname">State / Province</label>
+            <input class="form-control" name="province" ng-model="addPerson.province" placeholder="State / Province" required type="text" ng-model="selected" uib-typeahead="state for state in states | filter:$viewValue | limitTo:5" class="form-control">
+            <span class="input-error" ng-show="personForm.province.$touched && personForm.province.$error.required">State / Province required.</span>
+        </div>       
+      </div>
+
+      <div ng-class="{'has-error': !personForm.country.$error}" class="form-group">
+        <div class='typeahead-demo' ng-controller="typeahead">
+            <label for="lname">Country</label>
+            <input class="form-control" name="country" ng-model="addPerson.country" placeholder="Country" required type="text" ng-model="selected" uib-typeahead="country for country in countries | filter:$viewValue | limitTo:3" class="form-control">
+            <span class="input-error" ng-show="personForm.country.$touched && personForm.country.$error.required">Country required.</span>
+        </div>       
+      </div>
+
+    </div>
+   
+    <!-- col 4 -->
+    <div class="col-sm-3">
+      <div class="btn-toolbar">
+          <div class="btn-group pull-right">
+              <i tooltip-placement="top-left" uib-tooltip="Save" ng-class="{'disabled' : !personForm.$valid || !password.validated }" class="btn btn-primary btn-sm fa fa-floppy-o " ng-click="personForm.$valid && password.validated && addPersonSave()"></i>
+              <i tooltip-placement="top-right" uib-tooltip="Close" class="btn btn-danger btn-sm fa fa-times " ng-click="toggleAddMode()"></i>
+          </div>
+      </div>
+    </div>
+
+  </div><!-- adduser-->
+
+  <table class="crud-grid table table-striped table-bordered table-condensed table-hover">
+      <tr class="head">
+          <th style="width: 200px;"></th>
+          <th style="width: 50px;">Id</th>
+          <th style="width: 150px;">
+            <a href="#" ng-click="sortType = 'fname'; sortReverse = !sortReverse">
+              First Name
+              <span ng-show="sortType == 'fname' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'fname' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <th style="width: 150px;">
+            <a href="#" ng-click="sortType = 'lname'; sortReverse = !sortReverse">
+              Last Name
+              <span ng-show="sortType == 'lname' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'lname' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <th style="width: 150px;">
+            <a href="#" ng-click="sortType = 'username'; sortReverse = !sortReverse">
+              Username
+              <span ng-show="sortType == 'username' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'username' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <th>
+            <a href="#" ng-click="sortType = 'desc'; sortReverse = !sortReverse">
+              Description
+              <span ng-show="sortType == 'desc' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'desc' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+      </tr>
+
+        <tr ng-repeat="person in filtered = people | orderBy:sortType:sortReverse | filter:search.string | startFrom:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage " ng-form name="editPerson">
+
+      <!--<tr ng-repeat="person in people.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage)) | orderBy:sortType:sortReverse | filter:searchRec" ng-form name="editPerson">-->
+          <td class="btn-actions" align="center">
+              <div class="btn-toolbar" ng-show="person.editMode == null || person.editMode == false">
+                  <div class="btn-group">
+                      <i tooltip-placement="bottom-left" uib-tooltip="Edit" class="action btn btn-sm btn-info fa fa-pencil-square-o " ng-click="go('/user/'+person.id)"></i>
+                      <i tooltip-placement="bottom-left" uib-tooltip="Quick Edit" class="action btn btn-sm btn-primary fa fa-pencil-square-o " ng-click="toggleEditMode(person)"></i>
+                      <i tooltip-placement="bottom-right" uib-tooltip="Delete" class="action btn btn-sm btn-danger fa fa-times " ng-click="!person.editMode && deletePerson(person)"></i>
+                  </div>
+              </div>
+              <div class="btn-toolbar" ng-show="person.editMode == true">
+                  <div class="btn-group">
+                      <i tooltip-placement="bottom-left" uib-tooltip="Save" class="action btn btn-sm btn-primary fa fa-floppy-o " ng-click="editPerson.$valid && updatePerson(person)"></i>
+                      <i tooltip-placement="bottom-right" uib-tooltip="Cancel" class="action btn btn-sm btn-danger fa fa-times " ng-click="toggleEditMode(person)"></i>
+                  </div>
+              </div>
+          </td>
+          <td>{{person.id}}</td>
+          <td>
+              <span ng-show="person.editMode == null || person.editMode == false">{{person.fname}}</span>
+              <input name="fname" ng-model="person.fname" ng-show="person.editMode == true" ng-keyup="editPerson.$valid && checkEditPerson($event,person);" required/>
+              <span class="input-error" ng-show="editPerson.fname.$touched && editPerson.fname.$error.required">First Name is required.</span>
+          </td>
+          <td>
+              <span ng-show="person.editMode == null || person.editMode == false">{{person.lname}}</span>
+              <input name="lname" ng-model="person.lname" ng-show="person.editMode == true" ng-keyup="editPerson.$valid && checkEditPerson($event,person);" required/>
+              <span class="input-error" ng-show="editPerson.lname.$touched && editPerson.lname.$error.required">Last Name is required.</span>
+          </td>
+          <td>
+              <span ng-show="person.editMode == null || person.editMode == false">{{person.username}}</span>
+              <input name="username" ng-model="person.username" ng-show="person.editMode == true" ng-keyup="editPerson.$valid && checkEditPerson($event,person);" required/>
+              <span class="input-error" ng-show="editPerson.username.$touched && editPerson.username.$error.required">Username is required.</span>
+          </td>
+          <td>
+              <span ng-show="person.editMode == null || person.editMode == false">{{person.desc}}</span>
+              <textarea class="editDesc" name="desc" ng-model="person.desc" ng-show="person.editMode == true" ng-keyup="editPerson.$valid && checkEditPerson($event,person);" required/></textarea>
+              <span class="input-error" ng-show="editPerson.desc.$touched && editPerson.desc.$error.required">Description is required.</span>
+          </td>
+      </tr>
+    </table>
+    <div id="paginationContainer" uib-pagination total-items="totalItems" force-ellipses="true" max-size="4" ng-model="currentPage" force-ellipses="true" num-pages="totalPages" ng-change="pageChanged()"></div>
+  </div>
+</div>
+
+<div id="spinnerWraper" ng-show="spinner">
+  <div id="spinnerMsg"><p>Rebuilding Data - Please wait :)</p></div>
+</div>

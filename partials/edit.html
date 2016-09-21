@@ -1,0 +1,132 @@
+<!-- addUser -->
+  <div id="addUser" class="row" ng-form name="editPersonForm" ng-repeat="person in people | filter : {id: currentId}" >
+    <h2>Edit User - {{person.lname}}, {{person.fname}} </h2>
+
+    <!-- col 1 -->
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <input class="form-control" ng-class="{'has-error': editPersonForm.fname.$error.required}" name="fname" ng-model="person.fname" placeholder="First Name" required/>
+        <span class="input-error" ng-show="editPersonForm.fname.$touched && editPersonForm.fname.$error.required">First Name is required.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <input class="form-control" ng-class="{'has-error': editPersonForm.lname.$error.required}" name="lname" ng-model="person.lname" placeholder="Last Name" required/>
+        <span class="input-error" ng-show="editPersonForm.lname.$touched && editPersonForm.lname.$error.required">Last Name is required.</span>
+      </div>
+
+      <div ng-controller="datePicker" class="form-group">
+        <label for="date">Date</label>
+            <p class="input-group">
+              <input name="date" ng-model="person.date" value="{{person.date}}" type="text" class="form-control" placeholder="Date" uib-datepicker-popup="{{format}}" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+      </div>
+
+      <div class="form-group">
+        <label for="desc">Note</label>
+        <input class="form-control" ng-class="{'has-error': editPersonForm.desc.$error.required}" name="desc" ng-model="person.desc" ng-keyup="checkAddPerson($event);" placeholder="Notes" required/>
+        <span class="input-error" ng-show="editPersonForm.desc.$touched && editPersonForm.desc.$error.required">Note is required.</span>
+      </div>
+
+    </div>
+
+    <!-- col 2 -->
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input class="form-control" ng-class="{'has-error': editPersonForm.username.$error.required}" autocomplete="off" name="username" ng-model="person.username" ng-keyup="checkAddPerson($event);" placeholder="Username" required/>
+        <span class="input-error" ng-show="editPersonForm.username.$touched && editPersonForm.username.$error.required">Username is required.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" ng-class="{'has-error': password.validated === false }" data-ng-blur="validatePassword(person)" ng-init="validatePassword(person)" autocomplete="off" class="form-control" name="password" ng-model="person.password" ng-keyup="validatePassword(person);checkAddPerson($event);" placeholder="Password" />
+
+        <uib-progressbar max="max" value="password.passwordScore" type="{{password.passwordType}}"><span style="color:white; white-space:nowrap;">{{password.passwordLabel}} : {{password.passwordScore}} / {{password.passwordMax}}</span></uib-progressbar>
+        <span class="input-error" ng-show="editPersonForm.password.$touched && editPersonForm.password.$error.required">Password is required.</span>
+        <ul id="passwordValidate">
+          <li>One Capital - <span ng-class="{'has-error': !password.oneCap}">{{password.oneCap ? 'Pass!': 'Fail'}}</span></li>
+          <li>One Number -  <span ng-class="{'has-error': !password.oneNum}">{{password.oneNum? 'Pass!': 'Fail'}}</span></li>          
+          <li>One Symbol -  <span ng-class="{'has-error': !password.oneSymbol}">{{password.oneSymbol? 'Pass!': 'Fail!'}}</span></li>
+          <li>Min. Eight Characters - <span ng-class="{'has-error': !password.eightChars}">{{password.eightChars? 'Pass!': 'Fail'}}</span></li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label class="radio" for="dept">Department</label>
+        <div name="dept" class="btn-group" required>        
+          <label class="btn btn-sm btn-primary" ng-model="person.dept" uib-btn-radio="'Executive'">Executive</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.dept" uib-btn-radio="'Sales'">Sales</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.dept" uib-btn-radio="'Marketing'">Marketing</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.dept" uib-btn-radio="'IT'">IT</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.dept" uib-btn-radio="'Engineering'">Engineering</label>
+        </div>
+        <span class="input-error" ng-show="editPersonForm.dept.$touched && editPersonForm.dept.$error.required">Department is required.</span>
+      </div>
+
+      <div class="form-group">
+        <label class="radio" for="role">Role</label>
+        <div name="role" class="btn-group" required>        
+          <label class="btn btn-sm btn-primary" ng-model="person.role" uib-btn-radio="'Admin'">Admin</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.role" uib-btn-radio="'Sales'">Sales</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.role" uib-btn-radio="'Marketing'">Marketing</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.role" uib-btn-radio="'IT'">IT</label>
+          <label class="btn btn-sm btn-primary" ng-model="person.role" uib-btn-radio="'Engineering'">Engineering</label>
+        </div>
+        <span class="input-error" ng-show="editPersonForm.role.$touched && editPersonForm.role.$error.required">Role is required.</span>
+      </div>
+    </div>
+
+    <!-- col 3 -->
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label for="lname">Street</label>
+        <input class="form-control" ng-class="{'has-error': editPersonForm.street.$error.required}"  name="street" ng-model="person.street" placeholder="Street" required/>
+        <span class="input-error" ng-show="editPersonForm.street.$touched && editPersonForm.street.$error.required">Street s required.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="lname">City</label>
+        <input class="form-control" ng-class="{'has-error': editPersonForm.city.$error.required}"  name="city" ng-model="person.city" placeholder="City" required/>
+        <span class="input-error" ng-show="editPersonForm.city.$touched && editPersonForm.city.$error.required">City required.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="lname">Postal</label>
+        <input class="form-control" ng-class="{'has-error': editPersonForm.postal.$error.required}"  name="postal" ng-model="person.postal" placeholder="Postal" required/>
+        <span class="input-error" ng-show="editPersonForm.postal.$touched && editPersonForm.postal.$error.required">Postal is required.</span>
+      </div>
+
+      <div class="form-group">
+        <div class='typeahead-demo' ng-controller="typeahead">
+            <label for="lname">State / Province</label>
+            <input class="form-control" ng-class="{'has-error': editPersonForm.province.$error.required}" name="province" ng-model="person.province" placeholder="State / Province" required type="text" ng-model="selected" uib-typeahead="state for state in states | filter:$viewValue | limitTo:5" class="form-control">
+            <span class="input-error" ng-show="editPersonForm.province.$touched && editPersonForm.province.$error.required">State / Province required.</span>
+        </div>       
+      </div>
+
+      <div class="form-group">
+        <div class='typeahead-demo' ng-controller="typeahead">
+            <label for="lname">Country</label>
+            <input class="form-control" ng-class="{'has-error': editPersonForm.country.$error.required}" name="country" ng-model="person.country" placeholder="Country" required type="text" ng-model="selected" uib-typeahead="country for country in countries | filter:$viewValue | limitTo:3" class="form-control">
+            <span class="input-error" ng-show="editPersonForm.country.$touched && editPersonForm.country.$error.required">Country required.</span>
+        </div>       
+      </div>
+
+    </div>
+   
+    <!-- col 4 -->
+    <div class="col-sm-3">
+      <div class="btn-toolbar btn-edit-action">
+          <div class="btn-group pull-right">
+              <i tooltip-placement="top-left" uib-tooltip="Save" ng-class="{'disabled' : !editPersonForm.$valid}" class="btn btn-primary btn-sm fa fa-floppy-o " ng-click="editPersonForm.$valid && updatePerson(person) && go('/user')"></i>
+              <i tooltip-placement="top-right" uib-tooltip="Close" class="btn btn-danger btn-sm fa fa-times " ng-click="go('/user')"></i>
+          </div>
+      </div>
+    </div>
+
+  </div><!-- adduser-->
